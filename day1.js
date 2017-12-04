@@ -1,6 +1,15 @@
-function partOne(num){
+function partOne(str){
+  var total = 0;
+  for (var i = 0; i < str.length; i++){
+    if (str[i] === str[i + 1]){
+      total += Number(str[i]);
+    }
+  }
+  if (str[0] === str[str.length - 1]){
+    total += Number(str[0]);
+  }
 
-
+  return total;
 }
 
 function partTwo(num){
