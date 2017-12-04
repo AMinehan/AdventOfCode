@@ -1,5 +1,22 @@
 function partOne(num){
+  var bottomRight = 1;
+  var prev, next, mid;
 
+  for (var i = 1; bottomRight < num; i++){
+    prev = bottomRight;
+    bottomRight += 8 * i;
+  }
+
+  i -= 1;
+
+  while (prev + (i * 2) < num){
+    prev += (i * 2);
+  }
+
+  next = prev + (i * 2);
+
+  mid = prev + ((next - prev) / 2);
+  return i + (mid > num ? mid - num : num - mid);
 }
 
 function partTwo(num){
