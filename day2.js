@@ -1,5 +1,16 @@
 function partOne(arr){
+  var high, low;
+  var total = 0;
 
+  for (var i = 0; i < arr.length; i++){
+    high = low = arr[i][0];
+    for (var j = 1; j < arr[i].length; j++){
+      high = arr[i][j] > high ? arr[i][j] : high;
+      low = arr[i][j] < low ? arr[i][j] : low;
+    }
+    total += high - low;
+  }
+  return total;
 }
 
 function partTwo(arr){
@@ -14,8 +25,8 @@ function partTwo(arr){
         high = arr[i][x]
         if (high % low === 0){
           total += high / low;
-
-
+          break;
+          break;
         }
       }
     }
