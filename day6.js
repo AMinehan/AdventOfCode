@@ -3,10 +3,8 @@ function partOne(arr){
   var iSeenTrie = new Trie();
   var currentIndex, distribute;
 
-  var seent = {};
-
   while (true){
-    iSeenTrie.add(arr);
+    iSeenTrie.add(arr, total);
 
     currentIndex = findLargestIndex(arr);
     distribute = arr[currentIndex];
@@ -29,11 +27,31 @@ function partOne(arr){
 }
 
 function partTwo(arr){
+  var total = 0;
+  var currentIndex, distribute;
+  var seen = JSON.stringify(arr);
 
+  while (true){
+
+    currentIndex = findLargestIndex(arr);
+    distribute = arr[currentIndex];
+    arr[currentIndex] = 0;
+
+    for (; distribute > 0; distribute --){
+      currentIndex += 1;
+      if (currentIndex === arr.length){
+        currentIndex = 0;
+      }
+      arr[currentIndex] += 1;
+    }
+
+    total += 1;
+
+    if (seen === JSON.stringify(arr)){
+      return total;
+    }
+  }
 }
-
-
-var input = [10, 3, 15, 10, 5, 15, 5, 15, 9, 2, 5, 8, 5, 2, 3, 6];
 
 function findLargestIndex (array){
   var largest = array[0];
@@ -51,7 +69,7 @@ function Trie(){
   this.root = {};
 }
 
-Trie.prototype.add = function(sequence){
+Trie.prototype.add = function(sequence, count){
   var current = this.root;
   for (var i = 0; i < sequence.length; i++){
     if (current.hasOwnProperty(sequence[i])){
@@ -61,7 +79,7 @@ Trie.prototype.add = function(sequence){
       current = current[sequence[i]];
     }
   }
-  current.end = true;
+  current.end = count;
 }
 
 Trie.prototype.has = function(sequence){
@@ -72,8 +90,12 @@ Trie.prototype.has = function(sequence){
       return false;
     }
   }
-  return true;
+  return current.end;
 }
+
+
+var input = [10, 3, 15, 10, 5, 15, 5, 15, 9, 2, 5, 8, 5, 2, 3, 6];
+
 
 console.log(partOne(input));
 console.log(partTwo(input));
