@@ -53,6 +53,40 @@ function partTwo(arr){
   }
 }
 
+function partOneAndTwo(arr){
+  var seentBefore = new Trie();
+  var currentIndex, distributeIndex, checkIfSeen, firstRepeat, toDistribute;
+  var total = 0;
+
+  while (total < 19000){
+    currentIndex = findLargestIndex(arr);
+    seentBefore.add(arr, total);
+
+    toDistribute = arr[currentIndex];
+    arr[currentIndex] = 0;
+    distributeIndex = currentIndex + 1;
+
+    while (toDistribute > 0){
+      if (distributeIndex === arr.length){
+        distributeIndex = 0;
+      }
+      toDistribute -= 1;
+      arr[distributeIndex] += 1;
+      distributeIndex += 1;
+    }
+
+    total += 1;
+    checkIfSeen = seentBefore.has(arr);
+
+    if (checkIfSeen) {
+      console.log('part one:', total);
+      return 'part two: ' + (total - checkIfSeen)
+    }
+  }
+
+  return 'bjorked algorithm'
+}
+
 function findLargestIndex (array){
   var largest = array[0];
   var index = 0
@@ -87,7 +121,7 @@ Trie.prototype.has = function(sequence){
   for (var i = 0; i < sequence.length; i++){
     current = current[sequence[i]];
     if (current === undefined){
-      return false;
+      return undefined;
     }
   }
   return current.end;
@@ -95,7 +129,8 @@ Trie.prototype.has = function(sequence){
 
 
 var input = [10, 3, 15, 10, 5, 15, 5, 15, 9, 2, 5, 8, 5, 2, 3, 6];
-
+var input2 = input.slice(0);
 
 console.log(partOne(input));
 console.log(partTwo(input));
+console.log(partOneAndTwo(input2));
