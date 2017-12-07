@@ -98,20 +98,6 @@ function partTwo(obj){
 
   weightFinder(treeRoot);
 
-  // function findImbalance(obj){
-  //   var found = {}
-  //   for (var i = 0; i < obj.children.length; i++){
-  //     if (found.hasOwnProperty(obj.children[i].weight)){
-  //       found[obj.children[i].weight] += 1;
-  //     } else {
-  //       found[obj.children[i].weight] = 1;
-  //     }
-  //   }
-
-  // }
-
-  // findImbalance(treeRoot);
-
   return wrongitudeness;
 }
 
