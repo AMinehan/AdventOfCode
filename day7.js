@@ -16,3 +16,16 @@ for (var i = 0; i < rawInput.length; i++){
 }
 
 
+function partOne(obj){
+  var allEverything = 0;
+  for (var key in obj) {
+    allEverything = allEverything ^ parseInt(key, 36);
+    for (var i = 0; i < obj[key]['children'].length; i++){
+      allEverything = allEverything ^ parseInt(obj[key]['children'][i], 36);
+    }
+  }
+  return allEverything.toString(36);
+
+}
+
+console.log(partOne(treatedInput))
