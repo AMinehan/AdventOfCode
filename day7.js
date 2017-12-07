@@ -25,7 +25,95 @@ function partOne(obj){
     }
   }
   return allEverything.toString(36);
+}
 
+function partTwo(obj){
+  var treeRoot;
+  var wrongitudeness = 0;
+
+  // create a traverseable tree
+
+  function addToTree(string){
+    var newThing = {};
+    newThing['weight'] = obj[string]['weight'];
+    newThing['children'] = [];
+    for (var i = 0; i < obj[string]['children'].length; i++){
+      newThing.children.push(addToTree(obj[string]['children'][i]));
+    }
+    return newThing;
+  }
+  treeRoot = addToTree('gmcrj')
+
+  //traverses tree, calculates total weight for each program
+
+  function weightFinder(obj){
+    var totalWeight = Number(obj.weight);
+    var childWeight, weights;
+    var childWeights = {};
+    var imbalance = 0;
+    var imbalancedWeight, imbalancedChild;
+
+    for (var i = 0; i < obj.children.length; i++) {
+      childWeight = weightFinder(obj.children[i]);
+      totalWeight += childWeight;
+      if (childWeights.hasOwnProperty(childWeight)) {
+        childWeights[childWeight] += 1;
+      } else {
+        childWeights[childWeight] = 1;
+      }
+    }
+
+    //if an imbalance is detected, the answer lies within this node's children.
+    //also, check to make sure the answer hasn't already been found
+
+    if (Object.keys(childWeights).length > 1 && wrongitudeness === 0){
+      for (var key in childWeights) {
+        imbalance = Math.abs(imbalance - Number(key))
+        if (childWeights[key] === 1){
+          imbalancedWeight = Number(key);
+        }
+      }
+
+      //if imbalanced weight is lower than expected weight, switch imbalance to add to weight
+
+      weights = Object.keys(childWeights);
+      for (var i = 0; i < weights.length; i++){
+        if (weights[i] !== imbalancedWeight && weights[i] > imbalancedWeight){
+          imbalance *= -1;
+        }
+      }
+
+      //find the outlying weight, subtract imbalance from it, assign this value as the answer
+
+      for (var i = 0; i < obj.children.length; i++){
+        if (obj.children[i].totalWeight === imbalancedWeight){
+          wrongitudeness = Number(obj.children[i].weight) - imbalance
+        }
+      }
+    }
+
+    obj['totalWeight'] = totalWeight;
+    return totalWeight;
+  }
+
+  weightFinder(treeRoot);
+
+  // function findImbalance(obj){
+  //   var found = {}
+  //   for (var i = 0; i < obj.children.length; i++){
+  //     if (found.hasOwnProperty(obj.children[i].weight)){
+  //       found[obj.children[i].weight] += 1;
+  //     } else {
+  //       found[obj.children[i].weight] = 1;
+  //     }
+  //   }
+
+  // }
+
+  // findImbalance(treeRoot);
+
+  return wrongitudeness;
 }
 
 console.log(partOne(treatedInput))
+console.log(partTwo(treatedInput))
