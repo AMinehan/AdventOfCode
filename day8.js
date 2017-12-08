@@ -1,5 +1,6 @@
 function ObjectStorage(){
   this.datas = {};
+  this.largest = 0;
 }
 
 ObjectStorage.prototype.modify = function(str, val){
@@ -7,6 +8,9 @@ ObjectStorage.prototype.modify = function(str, val){
     this.datas[str] += val;
   } else {
     this.datas[str] = val;
+  }
+  if (this.datas[str] > this.largest){
+    this.largest = this.datas[str];
   }
 }
 
@@ -18,6 +22,10 @@ ObjectStorage.prototype.findLargest = function(){
     }
   }
   return largest;
+}
+
+ObjectStorage.prototype.findLargestEver = function(){
+  return this.largest;
 }
 
 ObjectStorage.prototype.check = function(str, val, sign){
@@ -73,6 +81,25 @@ function partOne(arr){
 }
 
 function partTwo(arr){
+  var splitString, sign, compareValue, incrementValue, objName, compareName;
+  var store = new ObjectStorage();
+
+  for (var i = 0; i < arr.length; i++){
+    splitString = arr[i].split(' if ');
+    incrementValue = Number(splitString[0].match(/[0-9\-]+/g))
+    objName = splitString[0].match(/[a-z]+/);
+    if (splitString[0].includes('dec')){
+      incrementValue *= -1;
+    }
+    sign = splitString[1].match(/[\=\<\>\!]/g).join('');
+    compareValue = Number(splitString[1].match(/[0-9\-]+/g));
+    compareName = splitString[1].match(/[a-z]+/g)
+
+    if (store.check(compareName, compareValue, sign)){
+      store.modify(objName, incrementValue)
+    }
+  }
+  return store.findLargestEver();
 
 
 }
